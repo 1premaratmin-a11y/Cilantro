@@ -1,0 +1,6 @@
+chromadb>=1.5.9
+ollama>=0.6.2
+openai>=1.0.0
+pypdf>=6.0.0
+streamlit>=1.61.1
+streamlit-mic-recorder>=0.0.8
