@@ -8,7 +8,7 @@ from streamlit_mic_recorder import speech_to_text
 # App config
 LOGO_PATH = "./assets/cilantro-logo.png"
 DB_PATH = "./final_project_db"
-COLLECTION_NAME = "comprehensive_recipes"
+COLLECTION_NAME = "recipe_knowledge_ollama"
 MODEL = "gpt-4.1-mini"
 SOURCE_LINK = "app/static/200_Comprehensive_Recipes.pdf"
 

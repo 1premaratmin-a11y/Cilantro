@@ -1,4 +1,5 @@
 import chromadb
+import re
 from pypdf import PdfReader
 from embedding_helper import create_embedding
 
@@ -16,11 +17,15 @@ def recipe_title(recipe: str) -> str:
 
 # Load and embed recipe text
 reader = PdfReader(PDF_PATH)
-recipes = []
-for page in reader.pages:
-    page_text = page.extract_text() or ""
-    if page_text.startswith("RECIPE"):
-        recipes.append(page_text.strip())
+document_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+recipes = [
+    recipe.strip()
+    for recipe in re.split(r"(?=RECIPE\s+\d{3}\s+\|)", document_text)
+    if recipe.strip().startswith("RECIPE")
+]
+
+if len(recipes) != 200:
+    raise RuntimeError(f"Expected 200 recipes, found {len(recipes)}")
 
 client = chromadb.PersistentClient(path=DB_PATH)
 collection = client.get_or_create_collection(name=COLLECTION_NAME)
