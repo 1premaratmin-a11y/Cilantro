@@ -8,7 +8,7 @@ from streamlit_mic_recorder import speech_to_text
 # App config
 LOGO_PATH = "./assets/cilantro-logo.png"
 DB_PATH = "./final_project_db"
-COLLECTION_NAME = "recipe_knowledge_ollama"
+COLLECTION_NAME = "comprehensive_recipes"
 MODEL = "gpt-4.1-mini"
 SOURCE_LINK = "app/static/200_Comprehensive_Recipes.pdf"
 
@@ -49,10 +49,13 @@ def ask_openai(question, instructions):
     return response.choices[0].message.content.strip()
 
 
-def source_citation(chunk: str, info: dict) -> str:
+def source_citation(chunk: str, info: dict | None) -> str:
+    if not info:
+        return f"- Chunk {chunk} | [Recipe source]({SOURCE_LINK})"
     return (
-        f"- Chunk {chunk} | Recipe {info['recipe_number']}: "
-        f"{info['title']} | [Source: {info['source']}]({SOURCE_LINK})"
+        f"- Chunk {chunk} | Recipe {info.get('recipe_number', 'unknown')}: "
+        f"{info.get('title', 'Untitled recipe')} | "
+        f"[Source: {info.get('source', 'recipe collection')}]({SOURCE_LINK})"
     )
 
 
